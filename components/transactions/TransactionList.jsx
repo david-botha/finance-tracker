@@ -76,7 +76,7 @@ const TransactionList = () => {
             }`}
           >
             <div className="text-gray-600 font-medium">
-              {new Date(transaction.date).toLocaleDateString()}
+              {new Date(transaction.date).toISOString().split('T')[0]}
             </div>
             <div className="text-gray-700 font-medium">
               {transaction.description}
