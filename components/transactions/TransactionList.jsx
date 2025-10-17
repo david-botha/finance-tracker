@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Edit3, Trash2, Calendar, Tag, FileText, HandCoins, Wrench } from 'lucide-react'
+import Button from '@/components/ui/Button'
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([
@@ -44,23 +45,23 @@ const TransactionList = () => {
         {/* Header */}
         <div className="grid grid-cols-5 gap-4 p-6 border-b-2 border-gray-200 font-semibold text-gray-700 bg-gray-50 rounded-t-xl">
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
+            <Calendar className="size-4" />
             Date
           </div>
           <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4" />
+            <FileText className="size-4" />
             Description
           </div>
           <div className="flex items-center gap-2">
-            <Tag className="w-4 h-4" />
+            <Tag className="size-4" />
             Category
           </div>
           <div className="flex items-center gap-2">
-            <HandCoins className="w-4 h-4" />
+            <HandCoins className="size-4" />
             Amount
           </div>
           <div className="flex items-center gap-2">
-            <Wrench className="w-4 h-4" />
+            <Wrench className="size-4" />
             Actions
           </div>
         </div>
@@ -90,12 +91,12 @@ const TransactionList = () => {
               {transaction.amount > 0 ? '+' : '-'}R{Math.abs(transaction.amount).toFixed(2)}
             </div>
             <div className="flex items-center gap-3">
-              <button className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all duration-300 group-hover:scale-105 border border-blue-200">
-                <Edit3 className="w-4 h-4" />
-              </button>
-              <button className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-300 group-hover:scale-105 border border-red-200">
-                <Trash2 className="w-4 h-4" />
-              </button>
+              <Button variant="edit" aria-label="Edit transaction">
+                <Edit3 className="size-4" />
+              </Button>
+              <Button variant="delete" aria-label="Delete transaction">
+                <Trash2 className="size-4" />
+              </Button>
             </div>
           </div>
         ))}
@@ -104,7 +105,7 @@ const TransactionList = () => {
         {transactions.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-400 mb-4">
-              <FileText className="w-16 h-16 mx-auto" />
+              <FileText className="size-16 mx-auto" />
             </div>
             <h3 className="text-lg font-semibold text-gray-600 mb-2">No transactions yet</h3>
             <p className="text-gray-500">Add your first transaction to get started</p>
