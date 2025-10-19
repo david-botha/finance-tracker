@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Edit3, Trash2, Calendar, Tag, FileText, HandCoins, Wrench } from 'lucide-react'
+import { Edit3, Trash2, Calendar, Tag, FileText, HandCoins, Wrench, Plus } from 'lucide-react'
 import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([
@@ -35,10 +36,17 @@ const TransactionList = () => {
       amount: 850.0,
     },
   ])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <div className="bg-[#fffeff] rounded-3xl p-8 transition-all duration-300 border-2 border-gray-200 shadow-sm m-8">
-      <h1 className="text-3xl text-gray-700 font-bold mb-6">Transactions</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl text-gray-800 font-semibold">Transactions</h1>
+        <Button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2">
+          <Plus className="size-5" />
+          Add Transaction
+        </Button>
+      </div>
 
       {/* Transaction List */}
       <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-sm">
@@ -112,6 +120,13 @@ const TransactionList = () => {
           </div>
         )}
       </div>
+
+      {/* Modal for Adding Transactions */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Add Transaction"
+      ></Modal>
     </div>
   )
 }
