@@ -4,39 +4,11 @@ import { useState } from 'react'
 import { Edit3, Trash2, Calendar, Tag, FileText, HandCoins, Wrench, Plus } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
+import TransactionForm from './TransactionForm'
 
-const TransactionList = () => {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      date: '2025-10-12',
-      description: 'Grocery Shopping',
-      category: 'Food',
-      amount: -245.75,
-    },
-    {
-      id: 2,
-      date: '2025-10-10',
-      description: 'Salary Deposit',
-      category: 'Income',
-      amount: 2940.5,
-    },
-    {
-      id: 3,
-      date: '2025-10-01',
-      description: 'Electricity Bill',
-      category: 'Utilities',
-      amount: -156.3,
-    },
-    {
-      id: 4,
-      date: '2025-10-01',
-      description: 'Freelance Work',
-      category: 'Income',
-      amount: 850.0,
-    },
-  ])
+const TransactionList = ({ transactions, addTransaction }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const handleClose = () => setIsModalOpen(false)
 
   return (
     <div className="bg-[#fffeff] rounded-3xl p-8 transition-all duration-300 border-2 border-gray-200 shadow-sm m-8">
@@ -51,7 +23,7 @@ const TransactionList = () => {
       {/* Transaction List */}
       <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-sm">
         {/* Header */}
-        <div className="grid grid-cols-5 gap-4 p-6 border-b-2 border-gray-200 font-semibold text-gray-700 bg-gray-50 rounded-t-xl">
+        <div className="grid grid-cols-5 gap-4 p-6 border-b-2 border-gray-200 font-semibold text-gray-700 bg-gray-50 rounded-t-xl select-none">
           <div className="flex items-center gap-2">
             <Calendar className="size-4" />
             Date
@@ -122,11 +94,9 @@ const TransactionList = () => {
       </div>
 
       {/* Modal for Adding Transactions */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Add Transaction"
-      ></Modal>
+      <Modal isOpen={isModalOpen} onClose={handleClose} title="Add Transaction">
+        <TransactionForm addTransaction={addTransaction} onClose={handleClose} />
+      </Modal>
     </div>
   )
 }
