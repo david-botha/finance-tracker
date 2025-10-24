@@ -65,10 +65,10 @@ const TransactionList = ({ transactions, addTransaction }) => {
             </div>
             <div
               className={`text-lg font-semibold tracking-tight ${
-                transaction.amount > 0 ? 'text-green-600' : 'text-red-600'
+                transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
               }`}
             >
-              {transaction.amount > 0 ? '+' : '-'}R{Math.abs(transaction.amount).toFixed(2)}
+              {transaction.type === 'income' ? '+' : '-'}R{Math.abs(transaction.amount).toFixed(2)}
             </div>
             <div className="flex items-center gap-3">
               <Button variant="edit" aria-label="Edit transaction">

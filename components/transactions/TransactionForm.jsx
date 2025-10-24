@@ -28,7 +28,6 @@ const TransactionForm = ({ addTransaction, onClose }) => {
     if (!date || !description || !category || !amount) return
 
     const newTransaction = {
-      id: Date.now(),
       date,
       description,
       category,
@@ -54,7 +53,7 @@ const TransactionForm = ({ addTransaction, onClose }) => {
           onChange={handleDateChange}
           autoComplete="off"
           className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></input>
+        />
       </div>
 
       {/* Description */}
@@ -69,7 +68,7 @@ const TransactionForm = ({ addTransaction, onClose }) => {
           onChange={handleDescriptionChange}
           autoComplete="off"
           className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></input>
+        />
       </div>
 
       {/* Category */}
@@ -145,7 +144,7 @@ const TransactionForm = ({ addTransaction, onClose }) => {
           onChange={handleAmountChange}
           autoComplete="off"
           className="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></input>
+        />
       </div>
 
       <Button type="submit" className="w-full">
