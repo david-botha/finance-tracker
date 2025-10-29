@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import TransactionForm from './TransactionForm'
 
-const TransactionList = ({ transactions, addTransaction }) => {
+const TransactionList = ({ transactions, addTransaction, deleteTransaction }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const handleClose = () => setIsModalOpen(false)
 
@@ -74,7 +74,11 @@ const TransactionList = ({ transactions, addTransaction }) => {
               <Button variant="edit" aria-label="Edit transaction">
                 <Edit3 className="size-4" />
               </Button>
-              <Button variant="delete" aria-label="Delete transaction">
+              <Button
+                variant="delete"
+                aria-label="Delete transaction"
+                onClick={() => deleteTransaction(transaction.id)}
+              >
                 <Trash2 className="size-4" />
               </Button>
             </div>

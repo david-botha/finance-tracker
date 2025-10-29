@@ -12,9 +12,7 @@ const Transactions = () => {
   }, [])
 
   useEffect(() => {
-    if (transactions.length > 0) {
-      saveTransactions(transactions)
-    }
+    saveTransactions(transactions)
   }, [transactions])
 
   const sortedTransactions = useMemo(() => {
@@ -28,9 +26,19 @@ const Transactions = () => {
     setTransactions(prevTransactions => [...prevTransactions, newTransaction])
   }
 
+  const deleteTransaction = id => {
+    setTransactions(prevTransactions =>
+      prevTransactions.filter(transaction => transaction.id !== id)
+    )
+  }
+
   return (
     <div>
-      <TransactionList transactions={sortedTransactions} addTransaction={addTransaction} />
+      <TransactionList
+        transactions={sortedTransactions}
+        addTransaction={addTransaction}
+        deleteTransaction={deleteTransaction}
+      />
     </div>
   )
 }
