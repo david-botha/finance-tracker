@@ -6,14 +6,18 @@ import { getTransactions, saveTransactions } from '@/lib/storage'
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([])
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   useEffect(() => {
     setTransactions(getTransactions())
+    setIsInitialLoad(false)
   }, [])
 
   useEffect(() => {
-    saveTransactions(transactions)
-  }, [transactions])
+    if (!isInitialLoad) {
+      saveTransactions(transactions)
+    }
+  }, [transactions, isInitialLoad])
 
   const sortedTransactions = useMemo(() => {
     return [...transactions].sort((a, b) => {
@@ -32,12 +36,21 @@ const Transactions = () => {
     )
   }
 
+  const editTransaction = (id, updatedTransaction) => {
+    setTransactions(prevTransactions =>
+      prevTransactions.map(transaction =>
+        transaction.id === id ? { ...transaction, ...updatedTransaction } : transaction
+      )
+    )
+  }
+
   return (
     <div>
       <TransactionList
         transactions={sortedTransactions}
         addTransaction={addTransaction}
         deleteTransaction={deleteTransaction}
+        editTransaction={editTransaction}
       />
     </div>
   )

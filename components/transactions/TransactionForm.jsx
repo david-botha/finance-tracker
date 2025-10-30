@@ -1,14 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from '@/components/ui/Button'
 
-const TransactionForm = ({ addTransaction, onClose }) => {
-  const [date, setDate] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('')
-  const [type, setType] = useState('expense')
-  const [amount, setAmount] = useState('')
+const TransactionForm = ({ addTransaction, editTransaction, editingTransaction, onClose }) => {
+  const [date, setDate] = useState(editingTransaction?.date || '')
+  const [description, setDescription] = useState(editingTransaction?.description || '')
+  const [category, setCategory] = useState(editingTransaction?.category || '')
+  const [type, setType] = useState(editingTransaction?.type || 'expense')
+  const [amount, setAmount] = useState(
+    editingTransaction ? Math.abs(editingTransaction.amount).toString() : ''
+  )
+
+  useEffect(() => {
+    if (editingTransaction) {
+      setDate(editingTransaction.date || '')
+      setDescription(editingTransaction.description || '')
+      setCategory(editingTransaction.category || '')
+      setType(editingTransaction.type || 'expense')
+      setAmount(Math.abs(editingTransaction.amount).toString())
+    } else {
+      setDate('')
+      setDescription('')
+      setCategory('')
+      setType('expense')
+      setAmount('')
+    }
+  }, [editingTransaction])
 
   const handleDateChange = e => setDate(e.target.value)
   const handleDescriptionChange = e => setDescription(e.target.value)
@@ -27,7 +45,7 @@ const TransactionForm = ({ addTransaction, onClose }) => {
 
     if (!date || !description || !category || !amount) return
 
-    const newTransaction = {
+    const transactionData = {
       date,
       description,
       category,
@@ -35,7 +53,12 @@ const TransactionForm = ({ addTransaction, onClose }) => {
       amount: type === 'expense' ? -parseFloat(amount) : parseFloat(amount),
     }
 
-    addTransaction(newTransaction)
+    if (editingTransaction) {
+      editTransaction(editingTransaction.id, transactionData)
+    } else {
+      addTransaction(transactionData)
+    }
+
     onClose()
   }
 
@@ -148,7 +171,7 @@ const TransactionForm = ({ addTransaction, onClose }) => {
       </div>
 
       <Button type="submit" className="w-full">
-        Add
+        {editingTransaction ? 'Update' : 'Add'}
       </Button>
     </form>
   )

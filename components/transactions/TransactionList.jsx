@@ -6,15 +6,30 @@ import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
 import TransactionForm from './TransactionForm'
 
-const TransactionList = ({ transactions, addTransaction, deleteTransaction }) => {
+const TransactionList = ({ transactions, addTransaction, deleteTransaction, editTransaction }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const handleClose = () => setIsModalOpen(false)
+  const [editingTransaction, setEditingTransaction] = useState(null)
+
+  const handleClose = () => {
+    setIsModalOpen(false)
+    setEditingTransaction(null)
+  }
+
+  const handleAdd = () => {
+    setEditingTransaction(null)
+    setIsModalOpen(true)
+  }
+
+  const handleEdit = transaction => {
+    setEditingTransaction(transaction)
+    setIsModalOpen(true)
+  }
 
   return (
     <div className="bg-[#fffeff] rounded-3xl p-8 transition-all duration-300 border-2 border-gray-200 shadow-sm m-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl text-gray-800 font-semibold">Transactions</h1>
-        <Button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2">
+        <Button onClick={handleAdd} className="flex items-center gap-2">
           <Plus className="size-5" />
           Add Transaction
         </Button>
@@ -71,7 +86,7 @@ const TransactionList = ({ transactions, addTransaction, deleteTransaction }) =>
               {transaction.type === 'income' ? '+' : '-'}R{Math.abs(transaction.amount).toFixed(2)}
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="edit" aria-label="Edit transaction">
+              <Button variant="edit" aria-label="Edit transaction" onClick={() => handleEdit(transaction)}>
                 <Edit3 className="size-4" />
               </Button>
               <Button
@@ -97,9 +112,18 @@ const TransactionList = ({ transactions, addTransaction, deleteTransaction }) =>
         )}
       </div>
 
-      {/* Modal for Adding Transactions */}
-      <Modal isOpen={isModalOpen} onClose={handleClose} title="Add Transaction">
-        <TransactionForm addTransaction={addTransaction} onClose={handleClose} />
+      {/* Modal for Adding and Editing Transactions */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        title={editingTransaction ? 'Edit Transaction' : 'Add Transaction'}
+      >
+        <TransactionForm
+          addTransaction={addTransaction}
+          editTransaction={editTransaction}
+          editingTransaction={editingTransaction}
+          onClose={handleClose}
+        />
       </Modal>
     </div>
   )
