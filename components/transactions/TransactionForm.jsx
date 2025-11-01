@@ -4,13 +4,11 @@ import { useState, useEffect } from 'react'
 import Button from '@/components/ui/Button'
 
 const TransactionForm = ({ addTransaction, editTransaction, editingTransaction, onClose }) => {
-  const [date, setDate] = useState(editingTransaction?.date || '')
-  const [description, setDescription] = useState(editingTransaction?.description || '')
-  const [category, setCategory] = useState(editingTransaction?.category || '')
-  const [type, setType] = useState(editingTransaction?.type || 'expense')
-  const [amount, setAmount] = useState(
-    editingTransaction ? Math.abs(editingTransaction.amount).toString() : ''
-  )
+  const [date, setDate] = useState('')
+  const [description, setDescription] = useState('')
+  const [category, setCategory] = useState('')
+  const [type, setType] = useState('expense')
+  const [amount, setAmount] = useState('')
 
   useEffect(() => {
     if (editingTransaction) {

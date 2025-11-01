@@ -1,14 +1,46 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowUpCircle, ArrowDownCircle, TrendingUp, TrendingDown } from 'lucide-react'
+import { getOpeningBalance, getTransactions } from '@/lib/storage'
 
 const BalanceSummary = () => {
-  const [balance, setBalance] = useState(7456.3)
-  const [monthlyIncome, setMonthlyIncome] = useState(2940.5)
-  const [monthlyExpenses, setMonthlyExpenses] = useState(10806.75)
+  const [balance, setBalance] = useState(0)
+  const [income, setIncome] = useState(0)
+  const [expenses, setExpenses] = useState(0)
+  const [netChange, setNetChange] = useState(0)
 
-  const netChange = monthlyIncome - monthlyExpenses
+  const calculateBalance = () => {
+    const openingBalance = getOpeningBalance() || 0
+    const allTransactions = getTransactions()
+
+    const totalIncome = allTransactions
+      .filter(t => t.type === 'income')
+      .reduce((acc, t) => acc + t.amount, 0)
+    const totalExpenses = allTransactions
+      .filter(t => t.type === 'expense')
+      .reduce((acc, t) => acc + t.amount, 0)
+
+    setIncome(totalIncome)
+    setExpenses(Math.abs(totalExpenses)) // Convert to positive for display
+    setNetChange(totalIncome + totalExpenses)
+    setBalance(openingBalance + totalIncome + totalExpenses)
+  }
+
+  useEffect(() => {
+    calculateBalance()
+
+    // Listen for storage changes to update when transactions are modified
+    const handleStorageChange = () => calculateBalance()
+
+    window.addEventListener('storage', handleStorageChange)
+    window.addEventListener('transactionsUpdated', handleStorageChange) // Custom event
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('transactionsUpdated', handleStorageChange)
+    }
+  }, [])
 
   return (
     <div className="bg-[#fffeff] rounded-3xl p-8 transition-all duration-300 border-2 border-gray-200 shadow-sm m-8">
@@ -39,7 +71,7 @@ const BalanceSummary = () => {
             <p className="text-gray-700 text-sm font-semibold">Income</p>
           </div>
           <h2 className="text-2xl font-semibold text-green-600 tracking-tight">
-            +R{monthlyIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            +R{income.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </h2>
         </div>
 
@@ -52,7 +84,7 @@ const BalanceSummary = () => {
             <p className="text-gray-700 text-sm font-semibold">Expenses</p>
           </div>
           <h2 className="text-2xl font-semibold text-red-600 tracking-tight">
-            -R{monthlyExpenses.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            -R{expenses.toLocaleString('en-US', { minimumFractionDigits: 2 })}
           </h2>
         </div>
 
