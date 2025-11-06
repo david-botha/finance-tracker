@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getOpeningBalance } from '@/lib/storage'
-import WelcomeScreen from '@/components/WelcomeScreen'
+import WelcomeScreen from '@/components/onboarding/WelcomeScreen'
 import BalanceSummary from '@/components/dashboard/BalanceSummary'
 import RecentTransactions from '@/components/dashboard/RecentTransactions'
 
