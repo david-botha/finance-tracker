@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import TransactionList from '@/components/transactions/TransactionList'
 import { getTransactions, saveTransactions } from '@/lib/storage'
+import TransactionList from '@/components/transactions/TransactionList'
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([])

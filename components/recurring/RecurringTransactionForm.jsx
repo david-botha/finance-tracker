@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { getRecurringTransactions, saveRecurringTransactions } from '@/lib/recurring'
 import Button from '../ui/Button'
 
-const RecurringTransactionForm = ({ onClose }) => {
+const RecurringTransactionForm = ({ addTransaction, onClose }) => {
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0])
   const [endDate, setEndDate] = useState('')
   const [frequency, setFrequency] = useState('')
@@ -34,7 +33,6 @@ const RecurringTransactionForm = ({ onClose }) => {
     if (endDate && startDate > endDate) return
 
     const transactionData = {
-      id: crypto.randomUUID(),
       startDate,
       endDate: endDate || null,
       frequency,
@@ -45,9 +43,7 @@ const RecurringTransactionForm = ({ onClose }) => {
       amount: type === 'expense' ? -parseFloat(amount) : parseFloat(amount),
     }
 
-    const existingRecurringTransactions = getRecurringTransactions()
-    saveRecurringTransactions([...existingRecurringTransactions, transactionData])
-
+    addTransaction(transactionData)
     onClose()
   }
 
