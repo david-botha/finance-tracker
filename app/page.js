@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { getOpeningBalance } from '@/lib/storage'
+import { processRecurringTransactions } from '@/lib/recurring'
 import WelcomeScreen from '@/components/onboarding/WelcomeScreen'
 import BalanceSummary from '@/components/dashboard/BalanceSummary'
 import RecentTransactions from '@/components/dashboard/RecentTransactions'
@@ -12,6 +13,7 @@ const Home = () => {
 
   // Check for opening balance after component mounts
   useEffect(() => {
+    processRecurringTransactions()
     setHasBalance(getOpeningBalance() !== null)
     setIsLoading(false)
   }, [])

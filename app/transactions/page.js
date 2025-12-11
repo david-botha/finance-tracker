@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { getTransactions, saveTransactions } from '@/lib/storage'
+import { processRecurringTransactions } from '@/lib/recurring'
 import TransactionList from '@/components/transactions/TransactionList'
 
 const Transactions = () => {
@@ -9,6 +10,7 @@ const Transactions = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   useEffect(() => {
+    processRecurringTransactions()
     setTransactions(getTransactions())
     setIsInitialLoad(false)
   }, [])
